@@ -1,0 +1,8 @@
+SELECT es.id_type AS email_type,
+CAST(COUNT(ec.id) * 100.0 / COUNT(es.id) AS DECIMAL(5,2)) AS click_percentage
+FROM emails_sent es
+LEFT JOIN emails_clicks ec ON es.id = ec.id_email
+AND DATEDIFF(MINUTE, es.date_sent, ec.date_click) <= 10
+WHERE es.date_sent >= DATEADD(DAY, -7, CAST(GETDATE() AS DATE))
+GROUP BY es.id_type
+ORDER BY email_type;

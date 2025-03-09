@@ -1,0 +1,14 @@
+WITH daily_emails AS (
+SELECT id_user, CAST(date_sent AS DATE) AS date_sent,
+COUNT(id) AS emails_count
+FROM emails_sent
+GROUP BY id_user, CAST(date_sent AS DATE)
+)
+
+SELECT id_user, date_sent, SUM(emails_count) OVER (
+PARTITION BY id_user
+ORDER BY sent_date
+ROWS UNBOUNDED PRECEDING
+) AS cumulative_emails_count
+FROM daily_emails
+ORDER BY id_user, sent_date;

@@ -1,0 +1,6 @@
+SELECT CAST(u.date_reg AS DATE) AS date_reg,
+c.[group] AS country_group, COUNT(u.id) AS new_users_count
+FROM users u
+JOIN countries c ON u.id_country = c.id
+GROUP BY CAST(u.date_reg AS DATE), c.[group]
+ORDER BY reg_date, country_group;
